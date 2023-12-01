@@ -1,12 +1,12 @@
 fun main() {
 
-    fun String.calibrationValueAfterReplace(): Int {
-        return first { it.isDigit() }.digitToInt() * 10 + last { it.isDigit() }.digitToInt()
-    }
+    fun String.firstDigit(): Int = first { it.isDigit() }.digitToInt()
 
-    fun part1(input: List<String>): Int {
-        return input.sumOf { it.calibrationValueAfterReplace() }
-    }
+    fun String.lastDigit(): Int = last { it.isDigit() }.digitToInt()
+
+    fun String.calibrationValueAfterReplace(): Int = firstDigit() * 10 + lastDigit()
+
+    fun part1(input: List<String>): Int = input.sumOf { it.calibrationValueAfterReplace() }
 
     val wordMap = mapOf(
         "one" to "o1e",
