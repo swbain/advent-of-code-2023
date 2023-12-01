@@ -6,8 +6,6 @@ fun main() {
 
     fun String.calibrationValueAfterReplace(): Int = firstDigit() * 10 + lastDigit()
 
-    fun part1(input: List<String>): Int = input.sumOf { it.calibrationValueAfterReplace() }
-
     val wordMap = mapOf(
         "one" to "o1e",
         "two" to "t2o",
@@ -27,6 +25,8 @@ fun main() {
         }
         return line
     }
+
+    fun part1(input: List<String>): Int = input.sumOf { it.calibrationValueAfterReplace() }
 
     fun part2(input: List<String>): Int = input.sumOf { it.replaceTextWithDigits().calibrationValueAfterReplace() }
 
