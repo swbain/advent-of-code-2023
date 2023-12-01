@@ -1,13 +1,11 @@
 fun main() {
 
-    fun String.sumAfterReplace(): Int {
+    fun String.calibrationValueAfterReplace(): Int {
         return first { it.isDigit() }.digitToInt() * 10 + last { it.isDigit() }.digitToInt()
     }
 
     fun part1(input: List<String>): Int {
-        return input.sumOf {  line ->
-            line.sumAfterReplace()
-        }
+        return input.sumOf { it.calibrationValueAfterReplace() }
     }
 
     val wordMap = mapOf(
@@ -22,15 +20,15 @@ fun main() {
         "nine" to "9e"
     )
 
-    fun part2(input: List<String>): Int {
-        return input.sumOf { lineIn ->
-            var line = lineIn
-            wordMap.forEach { (key, value) ->
-                line = line.replace(key, value)
-            }
-            line.sumAfterReplace()
+    fun String.replaceTextWithDigits(): String {
+        var line = this
+        wordMap.forEach { (key, value) ->
+            line = line.replace(key, value)
         }
+        return line
     }
+
+    fun part2(input: List<String>): Int = input.sumOf { it.replaceTextWithDigits().calibrationValueAfterReplace() }
 
     val input = readInput("Day01")
     "part 1: ${part1(input)}".println()
