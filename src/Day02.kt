@@ -24,8 +24,7 @@ fun main() {
         var red = 0
         var green = 0
         var blue = 0
-        split(": ").last().apply { println() }.split("; ").forEach { set ->
-            set.println()
+        split(": ").last().split("; ").forEach { set ->
             set.split(", ").forEach {
                 val split = it.split(" ")
                 val blockCount = split.first().toInt()
@@ -36,7 +35,7 @@ fun main() {
                 }
             }
         }
-        return (red * green * blue).apply { println() }
+        return red * green * blue
     }
 
     fun part1(input: List<String>): Int {
