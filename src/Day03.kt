@@ -2,7 +2,10 @@ fun main() {
 
     data class Symbol(val x: Int, val y: Int, val symbol: Char)
 
-    data class PartNumber(val startX: Int, val endX: Int, val y: Int, val value: Int)
+    data class PartNumber(val x: IntRange, val y: Int, val value: Int) {
+        val validX = x.first - 1..x.last + 1
+        val validY = y - 1..y + 1
+    }
 
     data class Data(val symbols: List<Symbol>, val partNumbers: List<PartNumber>)
 
@@ -12,8 +15,7 @@ fun main() {
         val symbols = mapIndexedNotNull { index, c -> if (c.isSymbol()) Symbol(index, y, c) else null }
         val partNumbers = "\\d+".toRegex().findAll(this).map {
             PartNumber(
-                startX = it.range.first,
-                endX = it.range.last,
+                x = it.range,
                 y = y,
                 value = it.value.toInt()
             )
@@ -35,11 +37,7 @@ fun main() {
         return Data(symbols, partNumbers)
     }
 
-    infix fun PartNumber.isAdjacentTo(symbol: Symbol): Boolean = when (y) {
-        symbol.y -> symbol.x == startX - 1 || symbol.x == endX + 1
-        symbol.y - 1, symbol.y + 1 -> symbol.x in (startX - 1)..(endX + 1)
-        else -> false
-    }
+    infix fun PartNumber.isAdjacentTo(symbol: Symbol): Boolean = symbol.x in validX && symbol.y in validY
 
     fun List<String>.validPartNumbers(): List<PartNumber> {
 
