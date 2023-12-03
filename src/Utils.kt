@@ -55,7 +55,7 @@ private fun <T> printTestResult(part: Int, expected: T, actual: MeasuredOutput<T
 }
 
 private fun <T> printRealDataOutput(part: Int, result: MeasuredOutput<T>) {
-    println("🤖 part $part answer: ${result.output} time: ${result.executionTimeMs}ms")
+    println("🤖 part $part answer: ${result.output} time: ${result.executionTimeMs}ms 🤖")
 }
 
 
