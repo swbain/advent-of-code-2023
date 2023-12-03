@@ -36,12 +36,12 @@ fun main() {
         return data.partNumbers.filter { it.isValid() }
     }
 
-    fun Data.gearRatios(): Int = symbols.filter { it.symbol == '*' }.sumOf { symbol ->
-        partNumbers.filter { it isAdjacentTo symbol }
-            .takeIf { it.count() == 2 }
-            ?.map(PartNumber::value)
-            ?.reduce(Int::times) ?: 0
-    }
+    infix fun List<PartNumber>.gearRatioWith(symbol: Symbol): Int = filter { it isAdjacentTo symbol }
+        .takeIf { it.count() == 2 }
+        ?.map(PartNumber::value)
+        ?.reduce(Int::times) ?: 0
+
+    fun Data.gearRatios(): Int = symbols.filter { it.symbol == '*' }.sumOf { partNumbers gearRatioWith it }
 
     fun part1(input: List<String>): Int = input.validPartNumbers().sumOf { it.value }
 
