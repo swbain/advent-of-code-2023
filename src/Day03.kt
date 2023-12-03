@@ -39,9 +39,10 @@ fun main() {
     }
 
     fun Data.gearRatios(): Int = symbols.filter { it.symbol == '*' }.sumOf { symbol ->
-        val adjacentParts = partNumbers.filter { it isAdjacentTo symbol }
-        if (adjacentParts.count() == 2) adjacentParts.first().value * adjacentParts.last().value
-        else 0
+        partNumbers.filter { it isAdjacentTo symbol }
+            .takeIf { it.count() == 2 }
+            ?.map { it.value }
+            ?.reduce(Int::times) ?: 0
     }
 
     fun part1(input: List<String>): Int = input.validPartNumbers().sumOf { it.value }
