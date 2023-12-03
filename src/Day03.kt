@@ -24,23 +24,13 @@ fun main() {
         return Data(symbols, partNumbers)
     }
 
-    fun List<String>.data(): Data {
-        val symbols = mutableListOf<Symbol>()
-        val partNumbers = mutableListOf<PartNumber>()
-
-        forEachIndexed { index, s ->
-            val rowData = s.rowData(index)
-            symbols.addAll(rowData.symbols)
-            partNumbers.addAll(rowData.partNumbers)
-        }
-
-        return Data(symbols, partNumbers)
+    fun List<String>.data(): Data  = mapIndexed { index, s -> s.rowData(index) }.reduce { acc, data ->
+        acc.copy(symbols = data.symbols + acc.symbols, partNumbers = data.partNumbers + acc.partNumbers)
     }
 
     infix fun PartNumber.isAdjacentTo(symbol: Symbol): Boolean = symbol.x in validX && symbol.y in validY
 
     fun List<String>.validPartNumbers(): List<PartNumber> {
-
         val data = data()
 
         fun PartNumber.isValid() = data.symbols.any { this isAdjacentTo it }
@@ -48,22 +38,15 @@ fun main() {
         return data.partNumbers.filter { it.isValid() }
     }
 
-    fun Data.gearRatios(): Int {
-
-        return symbols.filter { it.symbol == '*' }.sumOf { symbol ->
-            val adjacentParts = partNumbers.filter { it isAdjacentTo symbol }
-            if (adjacentParts.count() == 2) adjacentParts.first().value * adjacentParts.last().value
-            else 0
-        }
+    fun Data.gearRatios(): Int = symbols.filter { it.symbol == '*' }.sumOf { symbol ->
+        val adjacentParts = partNumbers.filter { it isAdjacentTo symbol }
+        if (adjacentParts.count() == 2) adjacentParts.first().value * adjacentParts.last().value
+        else 0
     }
 
-    fun part1(input: List<String>): Int {
-        return input.validPartNumbers().sumOf { it.value }
-    }
+    fun part1(input: List<String>): Int = input.validPartNumbers().sumOf { it.value }
 
-    fun part2(input: List<String>): Int {
-        return input.data().gearRatios()
-    }
+    fun part2(input: List<String>): Int = input.data().gearRatios()
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day03_test")
