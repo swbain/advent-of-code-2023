@@ -53,7 +53,7 @@ fun main() {
     val input = readInput("Day03")
     printOutput(
         day = 3,
-        part1 = Results(4361, part1(testInput), part1(input)),
-        part2 = Results(467835, part2(testInput), part2(input)),
+        part1 = Results(4361, runAndMeasure { part1(testInput) }, runAndMeasure { part1(input) }),
+        part2 = Results(467835, runAndMeasure { part2(testInput) }, runAndMeasure { part2(input) }),
     )
 }

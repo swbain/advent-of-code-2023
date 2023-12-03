@@ -20,7 +20,20 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  */
 fun Any?.println() = println(this)
 
-data class Results<T>(val expectedTestResult: T, val testResult: T, val actualResut: T)
+data class MeasuredOutput<T>(val output: T, val executionTimeMs: Long)
+
+fun <T> runAndMeasure(action: () -> T): MeasuredOutput<T> {
+    val startTime = System.currentTimeMillis()
+    val output = action()
+    val endTime = System.currentTimeMillis()
+    return MeasuredOutput(output, endTime - startTime)
+}
+
+data class Results<T>(
+    val expectedTestResult: T,
+    val testResult: MeasuredOutput<T>,
+    val actualResult: MeasuredOutput<T>,
+)
 
 fun <T> printOutput(
     day: Int,
@@ -30,19 +43,19 @@ fun <T> printOutput(
     println("********** Day $day **********")
     printTestResult(1, part1.expectedTestResult, part1.testResult)
     printTestResult(2, part2.expectedTestResult, part2.testResult)
-    printRealDataOutput(1, part1.actualResut)
-    printRealDataOutput(2, part2.actualResut)
+    printRealDataOutput(1, part1.actualResult)
+    printRealDataOutput(2, part2.actualResult)
 }
 
-private fun <T> printTestResult(part: Int, expected: T, actual: T) {
-    val success = expected == actual
+private fun <T> printTestResult(part: Int, expected: T, actual: MeasuredOutput<T>) {
+    val success = expected == actual.output
     val icon = if (success) "✅" else "❌"
     val status = if (success) "succeeded" else "failed"
-    println("$icon part $part test data $status - expected: $expected actual: $actual $icon")
+    println("$icon part $part test data $status - expected: $expected actual: ${actual.output} time: ${actual.executionTimeMs}ms $icon")
 }
 
-private fun <T> printRealDataOutput(part: Int, result: T) {
-    println("🤖 part $part answer: $result")
+private fun <T> printRealDataOutput(part: Int, result: MeasuredOutput<T>) {
+    println("🤖 part $part answer: ${result.output} time: ${result.executionTimeMs}ms")
 }
 
 
