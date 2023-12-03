@@ -32,16 +32,14 @@ fun main() {
 
     fun List<String>.validPartNumbers(): List<PartNumber> {
         val data = data()
-
         fun PartNumber.isValid() = data.symbols.any { this isAdjacentTo it }
-
         return data.partNumbers.filter { it.isValid() }
     }
 
     fun Data.gearRatios(): Int = symbols.filter { it.symbol == '*' }.sumOf { symbol ->
         partNumbers.filter { it isAdjacentTo symbol }
             .takeIf { it.count() == 2 }
-            ?.map { it.value }
+            ?.map(PartNumber::value)
             ?.reduce(Int::times) ?: 0
     }
 
