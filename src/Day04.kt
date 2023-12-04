@@ -25,11 +25,7 @@ fun main() {
     fun List<Card>.finalCount(): Int = associate { it.id to 1 }.toMutableMap()
         .apply {
             for (card in this@finalCount) {
-                repeat(this[card.id] ?: 1) {
-                    card.cardsToUpdate()?.forEach { id ->
-                        this[id]?.let { set(id, it + 1) }
-                    }
-                }
+                card.cardsToUpdate()?.forEach { id -> set(id, getValue(id) + getValue(card.id)) }
             }
         }
         .map { it.value }
