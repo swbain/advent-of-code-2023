@@ -20,16 +20,15 @@ fun main() {
         }
     }
 
-    fun Card.cardsToUpdate(): IntRange? = winners().takeIf { it > 0 }?.let { id + 1..id + it }
+    fun Card.idsToUpdate(): IntRange = winners().takeIf { it > 0 }?.let { id + 1..id + it } ?: IntRange.EMPTY
 
-    fun List<Card>.finalCount(): Int = associate { it.id to 1 }.toMutableMap()
-        .apply {
-            for (card in this@finalCount) {
-                card.cardsToUpdate()?.forEach { id -> set(id, getValue(id) + getValue(card.id)) }
-            }
+    fun List<Card>.finalCount(): Int {
+        val map = associateTo(mutableMapOf()) { it.id to 1 }
+        for (card in this) {
+            for (id in card.idsToUpdate()) map[id] = map.getValue(id) + map.getValue(card.id)
         }
-        .map { it.value }
-        .sum()
+        return map.values.sum()
+    }
 
     fun List<String>.toCards(): List<Card> = map { it.toCard() }
 
