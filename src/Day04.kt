@@ -25,7 +25,11 @@ fun main() {
     fun List<Card>.finalCount(): Int {
         val map = associate { it.id to 1 }.toMutableMap()
         for (card in this) {
-            for (id in card.idsToUpdate()) map[id] = map.getValue(id) + map.getValue(card.id)
+            for (id in card.idsToUpdate()) {
+                if (map.containsKey(id)) {
+                    map[id] = map.getValue(id) + map.getValue(card.id)
+                }
+            }
         }
         return map.values.sum()
     }
