@@ -23,7 +23,7 @@ fun main() {
     fun Card.idsToUpdate(): IntRange = winners().takeIf { it > 0 }?.let { id + 1..id + it } ?: IntRange.EMPTY
 
     fun List<Card>.finalCount(): Int {
-        val map = associateTo(mutableMapOf()) { it.id to 1 }
+        val map = associate { it.id to 1 }.toMutableMap()
         for (card in this) {
             for (id in card.idsToUpdate()) map[id] = map.getValue(id) + map.getValue(card.id)
         }
