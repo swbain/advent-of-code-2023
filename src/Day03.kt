@@ -1,3 +1,5 @@
+import kotlin.time.measureTimedValue
+
 fun main() {
 
     data class Symbol(val x: Int, val y: Int, val symbol: Char)
@@ -52,7 +54,15 @@ fun main() {
     val input = readInput("Day03")
     printOutput(
         day = 3,
-        part1 = Results(4361, runAndMeasure { part1(testInput) }, runAndMeasure { part1(input) }),
-        part2 = Results(467835, runAndMeasure { part2(testInput) }, runAndMeasure { part2(input) }),
+        part1 = Results(
+            expectedTestResult = 4361,
+            testResult = measureTimedValue { part1(testInput) },
+            actualResult = measureTimedValue { part1(input) },
+        ),
+        part2 = Results(
+            expectedTestResult = 467835,
+            testResult = measureTimedValue { part2(testInput) },
+            actualResult = measureTimedValue { part2(input) },
+        ),
     )
 }

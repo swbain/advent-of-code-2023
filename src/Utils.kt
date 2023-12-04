@@ -2,6 +2,7 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
+import kotlin.time.TimedValue
 
 /**
  * Reads lines from the given input txt file.
@@ -20,19 +21,10 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  */
 fun Any?.println() = println(this)
 
-data class MeasuredOutput<T>(val output: T, val executionTimeMs: Long)
-
-fun <T> runAndMeasure(action: () -> T): MeasuredOutput<T> {
-    val startTime = System.currentTimeMillis()
-    val output = action()
-    val endTime = System.currentTimeMillis()
-    return MeasuredOutput(output, endTime - startTime)
-}
-
 data class Results<T>(
     val expectedTestResult: T,
-    val testResult: MeasuredOutput<T>,
-    val actualResult: MeasuredOutput<T>,
+    val testResult: TimedValue<T>,
+    val actualResult: TimedValue<T>,
 )
 
 fun <T> printOutput(
@@ -47,15 +39,18 @@ fun <T> printOutput(
     printRealDataOutput(2, part2.actualResult)
 }
 
-private fun <T> printTestResult(part: Int, expected: T, actual: MeasuredOutput<T>) {
-    val success = expected == actual.output
+private fun <T> printTestResult(part: Int, expected: T, actual: TimedValue<T>) {
+    val success = expected == actual.value
     val icon = if (success) "✅" else "❌"
     val status = if (success) "succeeded" else "failed"
-    println("$icon part $part test data $status - expected: $expected actual: ${actual.output} time: ${actual.executionTimeMs}ms $icon")
+    println("$icon part $part test data $status - expected: $expected actual: ${actual.value} time: ${actual.milliseconds}ms $icon")
 }
 
-private fun <T> printRealDataOutput(part: Int, result: MeasuredOutput<T>) {
-    println("🤖 part $part answer: ${result.output} time: ${result.executionTimeMs}ms 🤖")
+private fun <T> printRealDataOutput(part: Int, result: TimedValue<T>) {
+    println("🤖 part $part answer: ${result.value} time: ${result.milliseconds}ms 🤖")
 }
+
+private val <T> TimedValue<T>.milliseconds: Long
+    get() = duration.inWholeMilliseconds
 
 

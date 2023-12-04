@@ -1,3 +1,5 @@
+import kotlin.time.measureTimedValue
+
 fun main() {
     fun part1(input: List<String>): Int {
         return input.size
@@ -14,13 +16,13 @@ fun main() {
         day = 4,
         part1 = Results(
             expectedTestResult = 0,
-            testResult = runAndMeasure { part1(testInput) },
-            actualResult = runAndMeasure { part1(input) }
+            testResult = measureTimedValue { part1(testInput) },
+            actualResult = measureTimedValue { part1(input) }
         ),
         part2 = Results(
             expectedTestResult = 0,
-            testResult = runAndMeasure { part2(testInput) },
-            actualResult = runAndMeasure { part2(input) }
+            testResult = measureTimedValue { part2(testInput) },
+            actualResult = measureTimedValue { part2(input) }
         ),
     )
 }
