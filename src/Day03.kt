@@ -13,18 +13,16 @@ fun main() {
 
     fun Char.isSymbol(): Boolean = !isDigit() && this != '.'
 
-    fun String.rowData(y: Int): Data {
-        val symbols = mapIndexedNotNull { index, c -> if (c.isSymbol()) Symbol(index, y, c) else null }
-        val partNumbers = "\\d+".toRegex().findAll(this).map {
+    fun String.rowData(y: Int): Data = Data(
+        symbols = mapIndexedNotNull { index, c -> if (c.isSymbol()) Symbol(index, y, c) else null },
+        partNumbers = "\\d+".toRegex().findAll(this).map {
             PartNumber(
                 x = it.range,
                 y = y,
                 value = it.value.toInt()
             )
         }.toList()
-
-        return Data(symbols, partNumbers)
-    }
+    )
 
     fun List<String>.data(): Data  = mapIndexed { index, s -> s.rowData(index) }.reduce { acc, data ->
         acc.copy(symbols = data.symbols + acc.symbols, partNumbers = data.partNumbers + acc.partNumbers)
