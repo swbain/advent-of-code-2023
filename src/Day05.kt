@@ -33,13 +33,25 @@ fun main() {
         return first().split(": ").last().split(" ").map { it.toLong() }
     }
 
+    fun List<String>.seedRanges(): List<LongRange> {
+        return seeds().chunked(2).map { it.first()..<it.first() + it.last() }
+    }
+
+    infix fun LongRange.minLocationFrom(components: List<Component>): Long {
+        var min = Long.MAX_VALUE
+        forEach {
+            min = minOf(min, it locationFrom components)
+        }
+        return min
+    }
+
     fun List<String>.components(): List<Component> {
         val components = mutableListOf<Component>()
         var currentMappings = mutableListOf<Mapping>()
         for (line in drop(2)) {
             if (line.isEmpty()) {
                 components.add(Component(currentMappings))
-                currentMappings= mutableListOf()
+                currentMappings = mutableListOf()
             } else if (line.first().isDigit()) currentMappings.add(line.toMapping())
         }
         components.add(Component(currentMappings))
@@ -50,8 +62,8 @@ fun main() {
         return input.seeds().minOf { it locationFrom input.components() }
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part2(input: List<String>): Long {
+        return input.seedRanges().minOf { it minLocationFrom input.components() }
     }
 
     val testInput = readInput("Day05_test")
@@ -64,7 +76,7 @@ fun main() {
             actualResult = measureTimedValue { part1(input) }
         ),
         part2 = Results(
-            expectedTestResult = 0,
+            expectedTestResult = 46,
             testResult = measureTimedValue { part2(testInput) },
             actualResult = measureTimedValue { part2(input) }
         ),
