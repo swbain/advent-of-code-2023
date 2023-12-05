@@ -4,7 +4,7 @@ fun main() {
 
     data class Mapping(val destination: IntRange, val source: IntRange)
 
-    fun String.toMapping(): Mapping = split(' ').map { it.trim().toInt() }.let {
+    fun String.toMapping(): Mapping = split(' ').filter { it.isNotEmpty() }.map { it.trim().toInt() }.let {
         Mapping(
             destination = it[0]..<it[0] + it[2],
             source = it[1]..<it[1] + it[2]
