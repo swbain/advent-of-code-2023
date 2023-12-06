@@ -1,8 +1,24 @@
 import kotlin.time.measureTimedValue
 
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    data class Race(val time: Long, val recordDistance: Long)
+
+    fun Race.isWin(holdTime: Long): Boolean {
+        val distance = holdTime * (time - holdTime)
+        return distance > recordDistance
+    }
+
+    fun Race.winCount(): Int = (1..<time).count { isWin(it) }
+
+    fun String.raceValues(): List<Long> = split(":").last()
+        .split(" ")
+        .filter { it.isNotBlank() }
+        .map { it.toLong() }
+
+    fun List<String>.races(): List<Race> = first().raceValues().zip(last().raceValues(), ::Race)
+
+    fun part1(input: List<String>): Long {
+        return input.races().map { it.winCount().toLong() }.reduce(Long::times)
     }
 
     fun part2(input: List<String>): Int {
@@ -14,7 +30,7 @@ fun main() {
     printOutput(
         day = 5,
         part1 = Results(
-            expectedTestResult = 0,
+            expectedTestResult = 288L,
             testResult = measureTimedValue { part1(testInput) },
             actualResult = measureTimedValue { part1(input) }
         ),
