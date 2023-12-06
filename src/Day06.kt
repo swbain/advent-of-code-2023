@@ -19,8 +19,8 @@ fun main() {
 
     fun List<String>.partTwoRace(): Race = Race(first().combinedNumbers(), last().combinedNumbers())
 
-    fun part1(input: List<String>): Long {
-        return input.races().map { it.winCount().toLong() }.reduce(Long::times)
+    fun part1(input: List<String>): Int {
+        return input.races().map { it.winCount() }.reduce(Int::times)
     }
 
     fun part2(input: List<String>): Int {
@@ -32,7 +32,7 @@ fun main() {
     printOutput(
         day = 5,
         part1 = Results(
-            expectedTestResult = 288L,
+            expectedTestResult = 288,
             testResult = measureTimedValue { part1(testInput) },
             actualResult = measureTimedValue { part1(input) }
         ),
