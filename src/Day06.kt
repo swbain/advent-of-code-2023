@@ -5,7 +5,7 @@ fun main() {
 
     fun Race.isWin(holdTime: Long): Boolean = holdTime * (time - holdTime) > recordDistance
 
-    fun Race.winCount(): Int = (1..<time).count(this::isWin)
+    fun Race.winCount(): Int = (1..<time).count(::isWin)
 
     fun String.trimmedToValues(): List<String> {
         return split(":").last().split(" ").filter { it.isNotBlank() }
