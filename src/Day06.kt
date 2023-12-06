@@ -17,10 +17,7 @@ fun main() {
 
     fun List<String>.races(): List<Race> = first().raceValues().zip(last().raceValues(), ::Race)
 
-    fun List<String>.partTwoRace(): Race = Race(
-        time = first().combinedNumbers(),
-        recordDistance = last().combinedNumbers(),
-    )
+    fun List<String>.partTwoRace(): Race = Race(first().combinedNumbers(), last().combinedNumbers())
 
     fun part1(input: List<String>): Long {
         return input.races().map { it.winCount().toLong() }.reduce(Long::times)
