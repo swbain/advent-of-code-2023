@@ -27,7 +27,7 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return input.partTwoRace().apply { println() }.winCount()
+        return input.partTwoRace().winCount()
     }
 
     val testInput = readInput("Day06_test")
