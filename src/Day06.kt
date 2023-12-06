@@ -3,9 +3,7 @@ import kotlin.time.measureTimedValue
 fun main() {
     data class Race(val time: Long, val recordDistance: Long)
 
-    fun Race.isWin(holdTime: Long): Boolean = holdTime * (time - holdTime) > recordDistance
-
-    fun Race.winCount(): Int = (1..<time).count(::isWin)
+    fun Race.winCount(): Int = (1..<time).count { it * (time - it) > recordDistance }
 
     fun String.trimmedToValues(): List<String> = split("\\s+".toRegex()).drop(1)
 
