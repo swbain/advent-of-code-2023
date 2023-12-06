@@ -7,9 +7,7 @@ fun main() {
 
     fun Race.winCount(): Int = (1..<time).count(::isWin)
 
-    fun String.trimmedToValues(): List<String> {
-        return split(":").last().split(" ").filter { it.isNotBlank() }
-    }
+    fun String.trimmedToValues(): List<String> = split("\\s+".toRegex()).drop(1)
 
     fun String.raceValues(): List<Long> = trimmedToValues().map { it.toLong() }
 
@@ -30,7 +28,7 @@ fun main() {
     val testInput = readInput("Day06_test")
     val input = readInput("Day06")
     printOutput(
-        day = 5,
+        day = 6,
         part1 = Results(
             expectedTestResult = 288,
             testResult = measureTimedValue { part1(testInput) },
