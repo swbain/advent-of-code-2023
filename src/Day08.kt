@@ -1,4 +1,3 @@
-import kotlinx.coroutines.*
 import kotlin.time.measureTimedValue
 
 fun main() {
@@ -63,19 +62,17 @@ fun main() {
     val testInput = readInput("Day08_test")
     val testInput2 = readInput("Day08_test2")
     val input = readInput("Day08")
-    runBlocking {
-        printOutput(
-            day = 8,
-            part1 = Results(
-                expectedTestResult = 6,
-                testResult = measureTimedValue { part1(testInput) },
-                actualResult = measureTimedValue { part1(input) }
-            ),
-            part2 = Results(
-                expectedTestResult = 6L,
-                testResult = measureTimedValue { part2(testInput2) },
-                actualResult = measureTimedValue { part2(input) }
-            ),
-        )
-    }
+    printOutput(
+        day = 8,
+        part1 = Results(
+            expectedTestResult = 6,
+            testResult = measureTimedValue { part1(testInput) },
+            actualResult = measureTimedValue { part1(input) }
+        ),
+        part2 = Results(
+            expectedTestResult = 6L,
+            testResult = measureTimedValue { part2(testInput2) },
+            actualResult = measureTimedValue { part2(input) }
+        ),
+    )
 }
