@@ -24,13 +24,21 @@ fun main() {
         return newSteps.last().last()
     }
 
+    fun List<Long>.nextValue2(): Long {
+        val steps = getSteps().reversed()
+        val newSteps = mutableListOf<List<Long>>()
+        steps.forEachIndexed { index, longs ->
+            if (index == 0) newSteps.add(longs)
+            else newSteps.add(longs.toMutableList().apply { add(0, longs.first() - newSteps[index - 1].first()) })
+        }
+        return newSteps.last().first()
+    }
+
     fun getValues(input: String): List<Long> = input.split(" ").map { it.toLong() }
 
     fun part1(input: List<String>): Long = input.sumOf { getValues(it).nextValue() }
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
+    fun part2(input: List<String>): Long = input.sumOf { getValues(it).nextValue2() }
 
     val testInput = readInput("Day09_test")
     val input = readInput("Day09")
@@ -42,7 +50,7 @@ fun main() {
             actualResult = measureTimedValue { part1(input) }
         ),
         part2 = Results(
-            expectedTestResult = 0,
+            expectedTestResult = 5L,
             testResult = measureTimedValue { part2(testInput) },
             actualResult = measureTimedValue { part2(input) }
         ),
