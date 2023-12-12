@@ -11,21 +11,9 @@ fun main() {
         line.flatMapIndexed { x, c -> if (c == '#') listOf(Point(x, y)) else emptyList() }
     }.flatten()
 
-    fun List<Point>.emptyRows(): List<Int> {
-        val emptyRows = mutableListOf<Int>()
-        for (i in 0..maxOf { it.y }) {
-            if (!any { it.y == i}) emptyRows.add(i)
-        }
-        return emptyRows
-    }
+    fun List<Point>.emptyRows(): List<Int> = (0..maxOf { it.y }).filter { y -> !any { it.y == y } }
 
-    fun List<Point>.emptyColumns(): List<Int> {
-        val emptyColumns = mutableListOf<Int>()
-        for (i in 0..maxOf { it.x }) {
-            if (!any { it.x == i}) emptyColumns.add(i)
-        }
-        return emptyColumns
-    }
+    fun List<Point>.emptyColumns(): List<Int> = (0..maxOf { it.x }).filter { x -> !any { it.x == x } }
 
     fun List<Point>.sumOfLengths(): Int {
 
@@ -40,13 +28,10 @@ fun main() {
 
         fun IndexedValue<Point>.shortestPaths(): Int = takeLast(size - index).sumOf { value.shortestPathTo(it) }
 
-        kotlin.io.println()
-        return withIndex().sumOf { it.apply { println() }.shortestPaths() }
+        return withIndex().sumOf { it.shortestPaths() }
     }
 
-    fun part1(input: List<String>): Int {
-        return input.getGalaxies().sumOfLengths()
-    }
+    fun part1(input: List<String>): Int = input.getGalaxies().sumOfLengths()
 
     fun part2(input: List<String>): Int {
         return input.size
